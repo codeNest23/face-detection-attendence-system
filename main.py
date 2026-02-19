@@ -45,7 +45,7 @@ def search_frame(frame):
         return sdk.search.search(search_request)
 
     except Exception as e:
-        print("🔥 API Error:", e)
+        print(" API Error:", e)
 
     finally:
         if temp_path and os.path.exists(temp_path):
@@ -88,7 +88,7 @@ def update_logic(results, centroid_y):
                 "exit_count": 0
             }
 
-            print(f"[{now_str}] 🆕 Detected → {name}")
+            print(f"[{now_str}] Detected → {name}")
             continue
 
         prev_side = person_memory[person_id]["last_side"]
@@ -100,11 +100,11 @@ def update_logic(results, centroid_y):
 
                 if prev_side == "inside" and current_side == "outside":
                     person_memory[person_id]["exit_count"] += 1
-                    print(f"[{now_str}] 🚪 EXIT → {name}")
+                    print(f"[{now_str}]  EXIT → {name}")
 
                 elif prev_side == "outside" and current_side == "inside":
                     person_memory[person_id]["entry_count"] += 1
-                    print(f"[{now_str}] 🏢 ENTRY → {name}")
+                    print(f"[{now_str}]  ENTRY → {name}")
 
                 person_memory[person_id]["last_event_time"] = current_time
 
@@ -121,10 +121,10 @@ def run_camera():
     cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
-        print("❌ Cannot open camera")
+        print(" Cannot open camera")
         return
 
-    print("🚀 Live Recognition Started | Press 'q' to quit")
+    print(" Live Recognition Started | Press 'q' to quit")
 
     last_api_call = 0
 
@@ -146,22 +146,22 @@ def run_camera():
 
         inside_count, outside_count = compute_counts()
 
-        # ✅ Draw divider line
+        #  Draw divider line
         cv2.line(frame, (0, LINE_Y), (640, LINE_Y), (0, 0, 255), 2)
 
-        # ✅ Date & Time
+        #  Date & Time
         now_text = datetime.now().strftime("%d %b %Y | %H:%M:%S")
         cv2.putText(frame, now_text, (10, 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
 
-        # ✅ Totals
+        # Totals
         cv2.putText(frame, f"Inside: {inside_count}", (10, 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
         cv2.putText(frame, f"Outside: {outside_count}", (10, 75),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 200, 255), 2)
 
-        # ✅ Per-person counters
+        #  Per-person counters
         y_offset = 110
 
         for data in person_memory.values():
@@ -184,3 +184,4 @@ def run_camera():
 
 if __name__ == "__main__":
     run_camera()
+
