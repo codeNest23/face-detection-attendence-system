@@ -54,7 +54,7 @@ def format_duration(seconds):
     secs = int(seconds % 60)
     return f"{hrs:02}:{mins:02}:{secs:02}"
 
-# ✅ WRITE ENTRY IMMEDIATELY
+#  WRITE ENTRY IMMEDIATELY
 def log_entry(person_id, name, entry_time):
     try:
         wb = load_workbook(excel_file)
@@ -66,12 +66,12 @@ def log_entry(person_id, name, entry_time):
         ws.append([date_str, entry_str, None, person_id, name, None])
         wb.save(excel_file)
 
-        print(f"✅ Entry Logged → {name}")
+        print(f"Entry Logged → {name}")
 
     except PermissionError:
         speak_once("Close Excel file")
 
-# ✅ UPDATE EXIT IN SAME ROW
+#  UPDATE EXIT IN SAME ROW
 def log_exit_update(person_id, exit_time):
 
     wb = load_workbook(excel_file)
@@ -99,10 +99,10 @@ def log_exit_update(person_id, exit_time):
 
             wb.save(excel_file)
 
-            print("✅ Exit Updated")
+            print("Exit Updated")
             return
 
-# ✅ RESTORE STATE AFTER RESTART
+#  RESTORE STATE AFTER RESTART
 def restore_memory_excel():
     if not os.path.exists(excel_file):
         return
@@ -167,7 +167,7 @@ def search_frame(frame):
         return sdk.search.search(search_request)
 
     except Exception as e:
-        print("🔥 API Error:", e)
+        print(" API Error:", e)
 
     finally:
         if temp_path and os.path.exists(temp_path):
@@ -183,7 +183,7 @@ def update_logic(results):
     now_str = datetime.now().strftime("%H:%M:%S")
 
     if not results:
-        print(f"[{now_str}] ❌ Person Not Registered")
+        print(f"[{now_str}]  Person Not Registered")
         speak_once("Person not registered")
         return "unregistered"
 
@@ -201,7 +201,7 @@ def update_logic(results):
                 "last_exit_time": None
             }
 
-            print(f"[{now_str}] 🏢 ENTRY → {name}")
+            print(f"[{now_str}]  ENTRY → {name}")
             log_entry(person_id, name, current_time)
             speak_once("Good morning, you are checked in")
 
@@ -220,7 +220,7 @@ def update_logic(results):
 
                 memory["last_exit_time"] = current_time
 
-                print(f"[{now_str}] 🚪 EXIT → {name}")
+                print(f"[{now_str}]  EXIT → {name}")
                 log_exit_update(person_id, current_time)
                 speak_once("Checkout successful")
 
@@ -228,7 +228,7 @@ def update_logic(results):
 
             else:
                 remaining = int((MIN_EXIT_GAP - time_inside) // 60)
-                print(f"[{now_str}] ⛔ EXIT BLOCKED → {name}")
+                print(f"[{now_str}]  EXIT BLOCKED → {name}")
                 speak_once("You cannot exit yet")
                 return "blocked_exit"
 
@@ -249,7 +249,7 @@ def update_logic(results):
                 return "reentry"
 
             else:
-                print(f"[{now_str}] ⛔ RE-ENTRY BLOCKED → {name}")
+                print(f"[{now_str}]  RE-ENTRY BLOCKED → {name}")
                 speak_once("Re-entry blocked")
                 return "blocked_reentry"
 
@@ -263,10 +263,10 @@ def run_camera():
     restore_memory_excel()
 
     if not cap.isOpened():
-        print("❌ Cannot open camera")
+        print(" Cannot open camera")
         return
 
-    print("🚀 Live Recognition Started | Press 'q' to quit")
+    print(" Live Recognition Started | Press 'q' to quit")
 
     last_api_call = 0
     status_text = ""
@@ -304,3 +304,4 @@ def run_camera():
 
 if __name__ == "__main__":
     run_camera()
+
